@@ -15,14 +15,9 @@ router.get("/posts", (req, res) => {
 });
 
 const server = http.createServer((req, res) => {
-  //const emitted = emitter.emit(`[${req.url}]:[${req.method}]`, req, res);
-  if(!emitted) {
-      res.end()
-  }
 
- 
 });
 
 server.listen(PORT, () => {
-  console.log("Server started on " + PORT + " port.");
+  console.log(`Server started on port ${PORT}`);
 });
