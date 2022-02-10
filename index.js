@@ -1,23 +1,15 @@
-const http = require("http");
-
-const Router = require('./framework/Router')
+const Application = require("./framework/Application");
 const PORT = process.env.PORT || 5000;
+const userRouter = require('./src/user-router')
+const jsonParser = require('./framework/parseJson')
+//const bodyParser = require('./framework/bodyParser')
+const parseUrl = require('./framework/parseUrl')
 
+const app = new Application();
 
+app.use(jsonParser);
+//app.use(bodyParser);
+app.use(parseUrl('http://localhost:5000'));
+app.addRouter(userRouter);
 
-const router = new Router();
-router.get("/users", (req, res) => {
-  res.end("You send request to /Users");
-});
-
-router.get("/posts", (req, res) => {
-  res.end("You send request to /POSTS");
-});
-
-const server = http.createServer((req, res) => {
-
-});
-
-server.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

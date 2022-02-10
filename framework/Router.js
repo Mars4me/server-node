@@ -15,9 +15,7 @@ module.exports = class Router {
   
       endpoint[method] = handler;
   
-    //   emitter.on(`[${path}]:[${method}]`, (req, res) => {
-    //     handler(req, res);
-    //   });
+
     }
     get(path, handler) {
       this.request("GET", path, handler);
