@@ -31,30 +31,18 @@ module.exports = class Application {
 
   _createServer() {
     return http.createServer((req, res) => {
-      let body = "";
+      this.middlewares.forEach(middleware => middleware(req, res));
 
-      req
-        .on("data", (chunk) => {
-          body += chunk;
-        })
-        .on("error", (error) => {
-          if (error) console.log(error);
-        })
-        .on("end", () => {
-          if (body) {
-            req.body = JSON.parse(body);
-          }
-          this.middlewares.forEach((middleware) => middleware(req, res));
-
-          const emitted = this.emitter.emit(
-            this._getRouteMask(req.pathname, req.method),
-            req,
-            res
-          );
-          if (!emitted) {
-            res.end();
-          }
-        });
+      req.on("end", () => {
+        const emitted = this.emitter.emit(
+          this._getRouteMask(req.pathname, req.method),
+          req,
+          res
+        );
+        if (!emitted) {
+          res.end();
+        }
+      });
     });
   }
 

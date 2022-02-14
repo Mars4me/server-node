@@ -1,15 +1,25 @@
 const Application = require("./framework/Application");
 const PORT = process.env.PORT || 5000;
-const userRouter = require('./src/user-router')
-const jsonParser = require('./framework/parseJson')
-//const bodyParser = require('./framework/bodyParser')
-const parseUrl = require('./framework/parseUrl')
+const userRouter = require("./src/user-router");
+const jsonParser = require("./framework/parseJson");
+const bodyParser = require('./framework/bodyParser')
+const parseUrl = require("./framework/parseUrl");
+const mongoose = require("mongoose");
 
 const app = new Application();
 
 app.use(jsonParser);
-//app.use(bodyParser);
-app.use(parseUrl('http://localhost:5000'));
+app.use(bodyParser);
+app.use(parseUrl("http://localhost:5000"));
 app.addRouter(userRouter);
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+const start = async () => {
+  try {
+      await mongoose.connect('mongodb+srv://qwe:123@cluster0.i8ry5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+      app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+start()
